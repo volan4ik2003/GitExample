@@ -1,16 +1,34 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterCOntroller : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public event Action OnCharacterDied;
+
+    public int Health { get; private set; }
+
     void Start()
     {
-        
+        Health = 100;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        {
+            TakeDamage(20);
+            Debug.Log(Health);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+
+        if (Health <= 0)
+        {
+            OnCharacterDied?.Invoke();
+        }
     }
 }
